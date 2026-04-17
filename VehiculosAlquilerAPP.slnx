@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="APPLICATION/VehiculosAlquilerApp.Application.csproj" />
+  <Project Path="Domain/VehiculosAlquilerApp.Domain.csproj" />
+  <Project Path="VehiculoAlquilerAPP.Infrastructure/VehiculoAlquilerAPP.Infrastructure.csproj" Id="0bbb9f44-b99a-4934-b57f-6c52876b2d39" />
+  <Project Path="VehiculosAlquilerAPP/VehiculosAlquilerAPP.csproj" />
+</Solution>
