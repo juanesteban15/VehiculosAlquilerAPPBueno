@@ -1,0 +1,266 @@
+@page
+@model WebAPP.Pages.Vehiculos.CrearModel
+@{
+    ViewData["Title"] = "Subir vehiculo";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">Subir vehiculo</h1>
+        <p class="text-muted mb-0">Elige si vas a publicar una moto o un carro.</p>
+    </div>
+    <a class="btn btn-outline-secondary" asp-page="/Index">Volver</a>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-4">
+        <label asp-for="Input.TipoVehiculoId" class="form-label">Que quieres publicar?</label>
+        <div class="btn-group w-100" role="group" aria-label="Tipo de vehiculo">
+            @foreach (var tipo in Model.TiposVehiculo)
+            {
+                string etiqueta = tipo.Codigo == "MOTO" ? "Moto" : "Carro";
+                <input asp-for="Input.TipoVehiculoId"
+                       type="radio"
+                       class="btn-check vehicle-type-option"
+                       id="tipo-@tipo.Codigo"
+                       value="@tipo.Id"
+                       data-kind="@tipo.Codigo"
+                       autocomplete="off" />
+                <label class="btn btn-outline-primary" for="tipo-@tipo.Codigo">@etiqueta</label>
+            }
+        </div>
+        <span asp-validation-for="Input.TipoVehiculoId" class="text-danger"></span>
+    </div>
+
+    <div id="vehicleFormFields" class="row g-3 d-none">
+        <div class="col-12">
+            <h2 id="vehicleFormTitle" class="h5 mb-0">Datos del vehiculo</h2>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Input.Placa" id="placaLabel" class="form-label">Placa</label>
+            <input asp-for="Input.Placa" class="form-control" />
+            <span asp-validation-for="Input.Placa" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Input.Modelo" class="form-label"></label>
+            <input asp-for="Input.Modelo" class="form-control" />
+            <span asp-validation-for="Input.Modelo" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Input.CategoriaId" class="form-label">Categoria</label>
+            <select asp-for="Input.CategoriaId" class="form-select" data-catalog-select>
+                <option value="">Selecciona una categoria</option>
+                @foreach (var item in Model.Categorias)
+                {
+                    <option value="@item.Id" data-tipo="@item.TipoVehiculoId">@item.Nombre</option>
+                }
+            </select>
+            <span asp-validation-for="Input.CategoriaId" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Input.MarcaId" class="form-label">Marca</label>
+            <select asp-for="Input.MarcaId" class="form-select" data-catalog-select>
+                <option value="">Selecciona una marca</option>
+                @foreach (var item in Model.Marcas)
+                {
+                    <option value="@item.Id" data-tipo="@item.TipoVehiculoId">@item.Nombre</option>
+                }
+            </select>
+            <span asp-validation-for="Input.MarcaId" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Input.CombustibleId" class="form-label">Combustible</label>
+            <select asp-for="Input.CombustibleId" class="form-select" data-catalog-select>
+                <option value="">Selecciona un combustible</option>
+                @foreach (var item in Model.Combustibles)
+                {
+                    <option value="@item.Id" data-tipo="@item.TipoVehiculoId">@item.Nombre</option>
+                }
+            </select>
+            <span asp-validation-for="Input.CombustibleId" class="text-danger"></span>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">Color en licencia de transito</label>
+            <div class="form-check mb-2">
+                <input asp-for="Input.EsMulticolor" class="form-check-input" id="multicolorCheck" />
+                <label asp-for="Input.EsMulticolor" class="form-check-label" for="multicolorCheck">Multicolor</label>
+            </div>
+            <span asp-validation-for="Input.EsMulticolor" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4 color-box">
+            <label asp-for="Input.ColorPrincipalId" class="form-label">Color principal</label>
+            <select asp-for="Input.ColorPrincipalId" class="form-select color-select">
+                <option value="">Selecciona el color predominante</option>
+                @foreach (var color in Model.Colores)
+                {
+                    <option value="@color.Id">@color.Nombre</option>
+                }
+            </select>
+            <span asp-validation-for="Input.ColorPrincipalId" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4 color-box">
+            <label asp-for="Input.ColorSecundarioId" class="form-label">Color secundario</label>
+            <select asp-for="Input.ColorSecundarioId" class="form-select color-select">
+                <option value="">Sin color secundario</option>
+                @foreach (var color in Model.Colores)
+                {
+                    <option value="@color.Id">@color.Nombre</option>
+                }
+            </select>
+            <span asp-validation-for="Input.ColorSecundarioId" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4 color-box">
+            <label asp-for="Input.ColorTerciarioId" class="form-label">Color terciario</label>
+            <select asp-for="Input.ColorTerciarioId" class="form-select color-select">
+                <option value="">Sin color terciario</option>
+                @foreach (var color in Model.Colores)
+                {
+                    <option value="@color.Id">@color.Nombre</option>
+                }
+            </select>
+            <span asp-validation-for="Input.ColorTerciarioId" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Input.TransmisionId" class="form-label">Transmision</label>
+            <select asp-for="Input.TransmisionId" class="form-select" data-catalog-select>
+                <option value="">Selecciona una transmision</option>
+                @foreach (var item in Model.Transmisiones)
+                {
+                    <option value="@item.Id" data-tipo="@item.TipoVehiculoId">@item.Nombre</option>
+                }
+            </select>
+            <span asp-validation-for="Input.TransmisionId" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="Input.Fotos" id="fotosLabel" class="form-label"></label>
+            <input asp-for="Input.Fotos" type="file" multiple class="form-control" accept=".jpg,.jpeg,.png" />
+            <span asp-validation-for="Input.Fotos" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Input.TarjetaPropiedad" class="form-label"></label>
+            <input asp-for="Input.TarjetaPropiedad" type="file" class="form-control" accept=".jpg,.jpeg,.png,.pdf" />
+            <span asp-validation-for="Input.TarjetaPropiedad" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Input.Soat" class="form-label"></label>
+            <input asp-for="Input.Soat" type="file" class="form-control" accept=".jpg,.jpeg,.png,.pdf" />
+            <span asp-validation-for="Input.Soat" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Input.Tecnomecanica" class="form-label"></label>
+            <input asp-for="Input.Tecnomecanica" type="file" class="form-control" accept=".jpg,.jpeg,.png,.pdf" />
+            <span asp-validation-for="Input.Tecnomecanica" class="text-danger"></span>
+        </div>
+
+        <div class="col-12">
+            <button id="publishButton" class="btn btn-primary" type="submit">Publicar vehiculo</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (() => {
+            const radios = document.querySelectorAll('.vehicle-type-option');
+            const fields = document.getElementById('vehicleFormFields');
+            const title = document.getElementById('vehicleFormTitle');
+            const placaLabel = document.getElementById('placaLabel');
+            const fotosLabel = document.getElementById('fotosLabel');
+            const button = document.getElementById('publishButton');
+            const selects = document.querySelectorAll('[data-catalog-select]');
+            const multicolorCheck = document.getElementById('multicolorCheck');
+            const colorSelects = document.querySelectorAll('.color-select');
+
+            const textByKind = {
+                AUTO: {
+                    title: 'Datos del carro',
+                    placa: 'Placa del carro',
+                    fotos: 'Fotos del carro',
+                    button: 'Publicar carro'
+                },
+                MOTO: {
+                    title: 'Datos de la moto',
+                    placa: 'Placa de la moto',
+                    fotos: 'Fotos de la moto',
+                    button: 'Publicar moto'
+                }
+            };
+
+            const selectedRadio = () => document.querySelector('.vehicle-type-option:checked');
+
+            const filterSelect = (select, tipoId) => {
+                let selectedOptionIsVisible = !select.value;
+
+                Array.from(select.options).forEach(option => {
+                    if (!option.value) {
+                        option.hidden = false;
+                        return;
+                    }
+
+                    const visible = option.dataset.tipo === tipoId;
+                    option.hidden = !visible;
+                    option.disabled = !visible;
+
+                    if (option.selected && visible) {
+                        selectedOptionIsVisible = true;
+                    }
+                });
+
+                if (!selectedOptionIsVisible) {
+                    select.value = '';
+                }
+            };
+
+            const updateForm = () => {
+                const radio = selectedRadio();
+                const hasType = Boolean(radio);
+                fields.classList.toggle('d-none', !hasType);
+
+                if (!hasType) {
+                    return;
+                }
+
+                const texts = textByKind[radio.dataset.kind] ?? textByKind.AUTO;
+                title.textContent = texts.title;
+                placaLabel.textContent = texts.placa;
+                fotosLabel.textContent = texts.fotos;
+                button.textContent = texts.button;
+
+                selects.forEach(select => filterSelect(select, radio.value));
+            };
+
+            radios.forEach(radio => radio.addEventListener('change', updateForm));
+
+            const updateColorMode = () => {
+                const disabled = multicolorCheck.checked;
+                colorSelects.forEach(select => {
+                    select.disabled = disabled;
+                    if (disabled) {
+                        select.value = '';
+                    }
+                });
+            };
+
+            multicolorCheck.addEventListener('change', updateColorMode);
+            updateForm();
+            updateColorMode();
+        })();
+    </script>
+}

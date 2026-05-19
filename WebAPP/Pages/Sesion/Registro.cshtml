@@ -1,0 +1,155 @@
+@page
+@model WebAPP.Pages.Sesion.RegistroModel
+@{
+    ViewData["Title"] = "Registro";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h1 class="h3 mb-2">@(Model.Input.TipoCuenta == "Empresa" ? "Registrar empresa de alquiler de vehiculo" : "Registrar usuario")</h1>
+        <p class="text-muted mb-4">@(Model.Input.TipoCuenta == "Empresa" ? "La empresa queda con perfil empresarial y documentos listos para verificacion." : "Crea tu cuenta para publicar o alquilar vehiculos.")</p>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.Nombre" class="form-label"></label>
+                    <input asp-for="Input.Nombre" class="form-control" />
+                    <span asp-validation-for="Input.Nombre" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.Apellido" class="form-label"></label>
+                    <input asp-for="Input.Apellido" class="form-control" />
+                    <span asp-validation-for="Input.Apellido" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.Email" class="form-label"></label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="email" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.Password" class="form-label"></label>
+                    <input asp-for="Input.Password" type="password" class="form-control" autocomplete="new-password" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.ConfirmPassword" class="form-label"></label>
+                    <input asp-for="Input.ConfirmPassword" type="password" class="form-control" autocomplete="new-password" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.Pais" class="form-label"></label>
+                    <input asp-for="Input.Pais" class="form-control" list="paisesNacimiento" autocomplete="off" placeholder="Escribe para buscar y selecciona" />
+                    <datalist id="paisesNacimiento">
+                        @foreach (var pais in Model.Paises)
+                        {
+                            <option value="@pais.Nombre"></option>
+                        }
+                    </datalist>
+                    <span asp-validation-for="Input.Pais" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.FechaNacimiento" class="form-label"></label>
+                    <input asp-for="Input.FechaNacimiento" type="date" class="form-control" />
+                    <span asp-validation-for="Input.FechaNacimiento" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="border rounded p-3 mb-3">
+                <div class="mb-3">
+                    <label asp-for="Input.TipoCuenta" class="form-label"></label>
+                    <select asp-for="Input.TipoCuenta" class="form-select" id="tipoCuenta">
+                        <option value="Persona">Persona</option>
+                        <option value="Empresa">Empresa</option>
+                    </select>
+                    <span asp-validation-for="Input.TipoCuenta" class="text-danger"></span>
+                </div>
+
+                <div id="empresaFields" class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Input.NombreEmpresa" class="form-label"></label>
+                        <input asp-for="Input.NombreEmpresa" class="form-control" />
+                        <span asp-validation-for="Input.NombreEmpresa" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Input.NitEmpresa" class="form-label"></label>
+                        <input asp-for="Input.NitEmpresa" class="form-control" />
+                        <span asp-validation-for="Input.NitEmpresa" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 mb-1">
+                        <label asp-for="Input.RuntEmpresa" class="form-label"></label>
+                        <input asp-for="Input.RuntEmpresa" type="file" class="form-control" accept=".jpg,.jpeg,.png,.pdf" />
+                        <span asp-validation-for="Input.RuntEmpresa" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Input.TelefonoPais" class="form-label"></label>
+                    <input asp-for="Input.TelefonoPais" class="form-control" list="paisesTelefono" autocomplete="off" placeholder="País del número" />
+                    <datalist id="paisesTelefono">
+                        @foreach (var pais in Model.Paises)
+                        {
+                            <option value="@pais.Nombre">@pais.Indicativo</option>
+                        }
+                    </datalist>
+                    <span asp-validation-for="Input.TelefonoPais" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Input.TelefonoNumero" class="form-label"></label>
+                    <input asp-for="Input.TelefonoNumero" class="form-control" placeholder="Ej: 3001234567" />
+                    <span asp-validation-for="Input.TelefonoNumero" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Input.TelefonoTipo" class="form-label"></label>
+                    <select asp-for="Input.TelefonoTipo" class="form-select">
+                        <option value="personal">Personal</option>
+                        <option value="trabajo">Trabajo</option>
+                        <option value="emergencia">Emergencia</option>
+                    </select>
+                    <span asp-validation-for="Input.TelefonoTipo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Guardar registro</button>
+        </form>
+
+        <div class="text-center mt-4">
+            <a asp-page="/Sesion/Login">Ya tengo cuenta</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const tipoCuenta = document.getElementById('tipoCuenta');
+        const empresaFields = document.getElementById('empresaFields');
+
+        function toggleEmpresaFields() {
+            empresaFields.style.display = tipoCuenta.value === 'Empresa' ? '' : 'none';
+        }
+
+        tipoCuenta.addEventListener('change', toggleEmpresaFields);
+        toggleEmpresaFields();
+    </script>
+}

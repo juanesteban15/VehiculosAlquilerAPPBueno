@@ -17,6 +17,8 @@ namespace VehiculosAlquilerApp.Domain.Entidades
         public string Observaciones { get; private set; }
         public DateTime FechaCreacion { get; private set; }
 
+        protected Reserva() { }
+
         public Reserva(
             Vehiculo vehiculo,
             Usuario cliente,

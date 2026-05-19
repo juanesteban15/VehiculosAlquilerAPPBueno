@@ -9,6 +9,7 @@
         public const string Efectivo = "EFECTIVO";
         public const string TarjetaCredito = "TARJETA_CREDITO";
         public const string Transferencia = "TRANSFERENCIA";
+        public const string Pse = "PSE";
 
         // Constructor para Entity Framework
         protected MetodoPago() { }

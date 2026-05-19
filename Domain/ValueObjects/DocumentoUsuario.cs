@@ -1,7 +1,8 @@
 ﻿
 using VehiculosAlquilerApp.Domain.Entidades;
 
-namespace VehiculosAlquilerApp.Domain.ValueObjects;
+namespace VehiculosAlquilerApp.Domain.ValueObjects
+{ 
     public class DocumentoUsuario
     {
         public Usuario Usuario { get; private set; }

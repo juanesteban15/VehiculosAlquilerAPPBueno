@@ -22,6 +22,8 @@ namespace VehiculosAlquilerApp.Domain.Entidades
         private readonly List<Color> _colores = new List<Color>();
         public IReadOnlyCollection<Color> Colores => _colores.AsReadOnly();
 
+        protected Vehiculo() { }
+
         public Vehiculo(
             string placa,
             TipoVehiculo tipoVehiculo,
@@ -51,7 +53,7 @@ namespace VehiculosAlquilerApp.Domain.Entidades
 
             // Regla de Negocio: Validación de consistencia entre Marca y Tipo
             // Asumiendo que Marca tiene una propiedad TipoVehiculo o TipoVehiculoId
-            if (Marca.TipoVehiculoId != TipoVehiculo.Id)
+            if (marca.TipoVehiculo.Id != tipoVehiculo.Id)
             {
                 throw new VehiculoInvalidoException($"La marca '{Marca.Nombre}' no es válida para un tipo de vehículo '{TipoVehiculo.Nombre}'.");
             }
@@ -65,6 +67,16 @@ namespace VehiculosAlquilerApp.Domain.Entidades
         {
             if (color == null)
                 throw new VehiculoInvalidoException("El color a agregar no puede ser nulo.");
+
+            if (_colores.Count >= 3)
+                throw new VehiculoInvalidoException("La licencia de transito permite registrar maximo tres colores.");
+
+            int ordenEsperado = _colores.Count + 1;
+            if (color.Orden == 0)
+                color.AsignarOrden(ordenEsperado);
+
+            if (color.Orden != ordenEsperado)
+                throw new VehiculoInvalidoException($"El color en posicion {ordenEsperado} debe registrarse antes de continuar.");
 
             // Regla: Evitar duplicados por nombre (insensible a mayúsculas)
             if (_colores.Any(c => c.Nombre.Equals(color.Nombre, StringComparison.OrdinalIgnoreCase)))

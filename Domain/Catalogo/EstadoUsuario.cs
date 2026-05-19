@@ -5,10 +5,10 @@
         public int Id { get; private set; }
         public string Nombre { get; private set; }
 
-        public const string Disponible = "DISPONIBLE";
-        public const string Rentado = "RENTADO";
-        public const string Mantenimiento = "MANTENIMIENTO";
-        public const string NoDisponible = "NO_DISPONIBLE";
+        public const string Verificado = "Verificado";
+        public const string Betado = "Betado";
+        public const string Sinverificar = "Sinverificar";
+        public const string NoDisponible = "NoDisponible";
 
         public EstadoUsuario(string nombre)
         {

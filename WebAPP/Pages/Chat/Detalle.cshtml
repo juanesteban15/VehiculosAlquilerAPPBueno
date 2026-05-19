@@ -1,0 +1,50 @@
+@page "{id:int}"
+@model WebAPP.Pages.Chat.DetalleModel
+@{
+    ViewData["Title"] = "Chat";
+}
+
+@if (Model.Conversacion is not null)
+{
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">Chat de reserva</h1>
+            <p class="text-muted mb-0">@Model.Conversacion.Vehiculo - @Model.Conversacion.Cliente / @Model.Conversacion.Propietario</p>
+        </div>
+        <a class="btn btn-outline-secondary" asp-page="/Reservas/MisReservas">Mis reservas</a>
+    </div>
+
+    <section class="chat-panel mb-3">
+        @if (!string.IsNullOrWhiteSpace(Model.Error))
+        {
+            <div class="alert alert-danger">@Model.Error</div>
+        }
+
+        @if (!Model.Conversacion.Mensajes.Any())
+        {
+            <div class="text-muted">Todavia no hay mensajes. Escribe el primero.</div>
+        }
+        else
+        {
+            @foreach (var mensaje in Model.Conversacion.Mensajes)
+            {
+                bool mio = mensaje.AutorId == Model.Conversacion.UsuarioActualId;
+                <div class="chat-message @(mio ? "chat-message-own" : "")">
+                    <strong>@mensaje.AutorNombre</strong>
+                    <p>@mensaje.Texto</p>
+                    <small>@mensaje.FechaEnvio:dd/MM/yyyy HH:mm</small>
+                </div>
+            }
+        }
+    </section>
+
+    <form method="post" class="chat-compose">
+        <textarea asp-for="Input.Texto" class="form-control" rows="3" placeholder="Escribe tu mensaje"></textarea>
+        <span asp-validation-for="Input.Texto" class="text-danger"></span>
+        <button class="btn btn-primary" type="submit">Enviar</button>
+    </form>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

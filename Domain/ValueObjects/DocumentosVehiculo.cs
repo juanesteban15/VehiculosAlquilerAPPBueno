@@ -2,7 +2,7 @@
 
 using VehiculosAlquilerApp.Domain.Entidades;
 
-namespace VehiculosAlquilerApp.Domain.ValueObjects;
+namespace VehiculosAlquilerApp.Domain.ValueObjects { 
     public class DocumentoVehiculo
     {
         public Vehiculo Vehiculo { get; private set; }

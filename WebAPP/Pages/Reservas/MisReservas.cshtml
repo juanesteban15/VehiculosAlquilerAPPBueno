@@ -1,0 +1,38 @@
+@page
+@model WebAPP.Pages.Reservas.MisReservasModel
+@{
+    ViewData["Title"] = "Mis reservas";
+}
+
+<h1 class="h3 mb-4">Mis reservas</h1>
+
+@if (!Model.Reservas.Any())
+{
+    <div class="alert alert-info">Todavia no has solicitado reservas.</div>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var reserva in Model.Reservas)
+        {
+            <article class="list-group-item">
+                <div class="d-flex flex-wrap justify-content-between gap-3">
+                    <div>
+                        <h2 class="h5 mb-1">@reserva.VehiculoNombre</h2>
+                        <p class="text-muted mb-1">Dueno: @reserva.PersonaNombre</p>
+                        <p class="mb-0">@reserva.FechaInicio:dd/MM/yyyy - @reserva.FechaFin:dd/MM/yyyy</p>
+                    </div>
+                    <div class="text-md-end">
+                        <span class="badge text-bg-light">@reserva.Estado</span>
+                        <p class="mb-2 mt-2">@reserva.PrecioTotal:C0</p>
+                        <a class="btn btn-outline-primary btn-sm" asp-page="/Vehiculos/Detalle" asp-route-placa="@reserva.VehiculoPlaca">Ver vehiculo</a>
+                        @if (reserva.ConversacionId.HasValue)
+                        {
+                            <a class="btn btn-primary btn-sm" asp-page="/Chat/Detalle" asp-route-id="@reserva.ConversacionId.Value">Abrir chat</a>
+                        }
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+}

@@ -1,0 +1,27 @@
+@page
+@model WebAPP.Pages.Notificaciones.IndexModel
+@{
+    ViewData["Title"] = "Notificaciones";
+}
+
+<h1 class="h3 mb-4">Notificaciones</h1>
+
+@if (!Model.Notificaciones.Any())
+{
+    <div class="alert alert-info">No tienes notificaciones.</div>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var notificacion in Model.Notificaciones)
+        {
+            <a class="list-group-item list-group-item-action" href="@(notificacion.Ruta ?? "#")">
+                <div class="d-flex justify-content-between gap-3">
+                    <h2 class="h6 mb-1">@notificacion.Titulo</h2>
+                    <small class="text-muted">@notificacion.FechaCreacion:dd/MM/yyyy HH:mm</small>
+                </div>
+                <p class="mb-0">@notificacion.Mensaje</p>
+            </a>
+        }
+    </div>
+}

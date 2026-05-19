@@ -1,0 +1,141 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.vehicle-card {
+  overflow: hidden;
+  background: #fff;
+}
+
+.vehicle-card img,
+.vehicle-card-placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+.vehicle-card-placeholder {
+  background: #eef1f4;
+  color: #6c757d;
+  display: grid;
+  place-items: center;
+}
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.filter-panel {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background: #fff;
+  padding: 1rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .06);
+}
+
+.vehicle-type-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.filter-empty-state {
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  color: #64748b;
+  padding: 1rem;
+  background: #f8fafc;
+}
+
+.vehicle-detail-main {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.vehicle-thumbs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: .75rem;
+}
+
+.vehicle-thumbs img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.detail-list dt,
+.detail-list dd {
+  padding-block: .35rem;
+  border-bottom: 1px solid #edf0f2;
+}
+
+.reservation-box,
+.chat-panel {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background: #fff;
+  padding: 1rem;
+}
+
+.chat-panel {
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.chat-message {
+  max-width: 78%;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: .75rem;
+  background: #f8fafc;
+}
+
+.chat-message p {
+  margin: .25rem 0;
+}
+
+.chat-message-own {
+  align-self: flex-end;
+  background: #eef6ff;
+  border-color: #bfdbfe;
+}
+
+.chat-compose {
+  display: grid;
+  gap: .75rem;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}

@@ -1,0 +1,102 @@
+@page
+@model WebAPP.Pages.Perfil.EditarModel
+@{
+    ViewData["Title"] = "Modificar perfil";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <h1 class="h3 mb-4">Modificar perfil</h1>
+
+        @if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+        {
+            <div class="alert alert-success">@Model.SuccessMessage</div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="row mb-4">
+                <div class="col-12 mb-3">
+                    @if (!string.IsNullOrWhiteSpace(Model.FotoPerfilRuta))
+                    {
+                        <img src="@Model.FotoPerfilRuta" alt="Foto de perfil" class="rounded-circle mb-3" style="width: 96px; height: 96px; object-fit: cover;" />
+                    }
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.Pais" class="form-label"></label>
+                    <input asp-for="Input.Pais" class="form-control" />
+                    <span asp-validation-for="Input.Pais" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.FechaNacimiento" class="form-label"></label>
+                    <input asp-for="Input.FechaNacimiento" type="date" class="form-control" />
+                    <span asp-validation-for="Input.FechaNacimiento" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.FotoPerfil" class="form-label"></label>
+                    <input asp-for="Input.FotoPerfil" type="file" class="form-control" accept=".jpg,.jpeg,.png" />
+                    <span asp-validation-for="Input.FotoPerfil" class="text-danger"></span>
+                </div>
+            </div>
+
+            <h2 class="h5 mb-3">Documentos de verificación</h2>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.DocumentoIdentidad" class="form-label"></label>
+                    <input asp-for="Input.DocumentoIdentidad" type="file" class="form-control" accept=".jpg,.jpeg,.png,.pdf" />
+                    <span asp-validation-for="Input.DocumentoIdentidad" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.LicenciaConduccion" class="form-label"></label>
+                    <input asp-for="Input.LicenciaConduccion" type="file" class="form-control" accept=".jpg,.jpeg,.png,.pdf" />
+                    <span asp-validation-for="Input.LicenciaConduccion" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </form>
+
+        @if (Model.Documentos.Any())
+        {
+            <hr class="my-4" />
+            <h2 class="h5 mb-3">Documentos subidos</h2>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Archivo</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var documento in Model.Documentos)
+                        {
+                            <tr>
+                                <td>@documento.TipoDocumento</td>
+                                <td><a href="@documento.RutaArchivo" target="_blank">@documento.NombreArchivo</a></td>
+                                <td>@documento.Estado</td>
+                                <td>@documento.FechaSubida.ToString("yyyy-MM-dd")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

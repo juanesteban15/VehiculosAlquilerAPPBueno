@@ -11,6 +11,8 @@ namespace VehiculosAlquilerApp.Domain.Entidades
         public DateTime FechaInicio { get; private set; }
         public bool Activa { get; private set; }
 
+        protected Tarifa() { }
+
         public Tarifa(Vehiculo vehiculo, decimal precioPorDia, DateTime fechaInicio)
         {
             // Validaciones de negocio

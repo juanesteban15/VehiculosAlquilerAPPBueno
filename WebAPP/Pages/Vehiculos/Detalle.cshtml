@@ -1,0 +1,137 @@
+@page "{placa}"
+@model WebAPP.Pages.Vehiculos.DetalleModel
+@{
+    ViewData["Title"] = Model.Vehiculo is null ? "Vehiculo" : $"{Model.Vehiculo.Marca} {Model.Vehiculo.Modelo}";
+}
+
+@if (Model.Vehiculo is not null)
+{
+    <div class="mb-4">
+        <a class="btn btn-outline-secondary btn-sm" asp-page="/Index">Volver</a>
+    </div>
+
+    <section class="row g-4 mb-4">
+        <div class="col-lg-7">
+            @if (Model.Vehiculo.Fotos.Any())
+            {
+                <img src="@Model.Vehiculo.Fotos.First()" alt="@Model.Vehiculo.Marca @Model.Vehiculo.Modelo" class="img-fluid rounded border vehicle-detail-main" />
+
+                <div class="vehicle-thumbs mt-3">
+                    @foreach (var foto in Model.Vehiculo.Fotos)
+                    {
+                        <img src="@foto" alt="Foto del vehiculo" class="rounded border" />
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="vehicle-detail-main vehicle-card-placeholder rounded border">Sin foto</div>
+            }
+        </div>
+
+        <div class="col-lg-5">
+            <h1 class="h3 mb-2">@Model.Vehiculo.Marca @Model.Vehiculo.Modelo</h1>
+            <p class="text-muted mb-3">@Model.Vehiculo.TipoVehiculo - @Model.Vehiculo.Categoria</p>
+
+            <p class="mb-3">
+                Publicado por @Model.Vehiculo.TipoPublicador.ToLower()
+                <a asp-page="/Perfil/Publico" asp-route-id="@Model.Vehiculo.PublicadorId">@Model.Vehiculo.PublicadorNombre</a>
+            </p>
+
+            <dl class="row detail-list">
+                <dt class="col-5">Placa</dt>
+                <dd class="col-7">@Model.Vehiculo.Placa</dd>
+
+                <dt class="col-5">Modelo</dt>
+                <dd class="col-7">@Model.Vehiculo.Modelo</dd>
+
+                <dt class="col-5">Color</dt>
+                <dd class="col-7">@Model.Vehiculo.Color</dd>
+
+                <dt class="col-5">Combustible</dt>
+                <dd class="col-7">@Model.Vehiculo.Combustible</dd>
+
+                <dt class="col-5">Transmision</dt>
+                <dd class="col-7">@Model.Vehiculo.Transmision</dd>
+
+                <dt class="col-5">Estado</dt>
+                <dd class="col-7">@Model.Vehiculo.Estado</dd>
+
+                <dt class="col-5">Tarifa</dt>
+                <dd class="col-7">
+                    @(Model.Vehiculo.PrecioPorDia.HasValue ? $"{Model.Vehiculo.PrecioPorDia.Value:C0} por dia" : "Sin tarifa activa")
+                </dd>
+            </dl>
+
+            <section class="reservation-box mt-4">
+                <h2 class="h5 mb-3">Reservar este vehiculo</h2>
+
+                @if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
+                {
+                    <div class="alert alert-success">@Model.SuccessMessage</div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger">@Model.ErrorMessage</div>
+                }
+
+                <form method="post" asp-page-handler="Reservar">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="Input.FechaInicio" class="form-label">Fecha inicio</label>
+                            <input asp-for="Input.FechaInicio" type="date" class="form-control" />
+                            <span asp-validation-for="Input.FechaInicio" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Input.FechaFin" class="form-label">Fecha fin</label>
+                            <input asp-for="Input.FechaFin" type="date" class="form-control" />
+                            <span asp-validation-for="Input.FechaFin" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="Input.MetodoPagoId" class="form-label">Metodo de pago</label>
+                            <select asp-for="Input.MetodoPagoId" class="form-select">
+                                <option value="">Selecciona</option>
+                                @foreach (var metodo in Model.Vehiculo.MetodosPago)
+                                {
+                                    <option value="@metodo.Id">@metodo.Nombre</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Input.MetodoPagoId" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <button class="btn btn-primary w-100" type="submit">Solicitar reserva</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="h5 mb-3">Documentos del vehiculo</h2>
+        @if (!Model.Vehiculo.Documentos.Any())
+        {
+            <div class="alert alert-light border">No hay documentos cargados para mostrar.</div>
+        }
+        else
+        {
+            <div class="list-group">
+                @foreach (var documento in Model.Vehiculo.Documentos)
+                {
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="@documento.RutaArchivo" target="_blank">
+                        <span>@documento.TipoDocumento</span>
+                        <small class="text-muted">@documento.NombreArchivo</small>
+                    </a>
+                }
+            </div>
+        }
+    </section>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

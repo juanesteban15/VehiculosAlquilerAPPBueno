@@ -1,0 +1,138 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Vehículos";
+}
+
+<section class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Vehículos disponibles</h1>
+        <p class="text-muted mb-0">Explora las publicaciones más recientes.</p>
+    </div>
+
+    @if (HttpContext.Session.GetInt32("UsuarioId") is not null)
+    {
+        <a class="btn btn-primary" asp-page="/Vehiculos/Crear">Subir vehículo</a>
+    }
+</section>
+
+<form method="get" class="filter-panel mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+        <div>
+            <label class="form-label mb-1">Primero elige el tipo de vehículo</label>
+            <div class="vehicle-type-selector" role="group">
+                @foreach (var tipo in Model.TiposVehiculo)
+                {
+                    <input class="btn-check" type="radio" name="TipoVehiculo" id="tipo-@tipo.Codigo" value="@tipo.Codigo" checked="@(Model.TipoVehiculo == tipo.Codigo)" onchange="this.form.submit()" />
+                    <label class="btn @(Model.TipoVehiculo == tipo.Codigo ? "btn-primary" : "btn-outline-primary")" for="tipo-@tipo.Codigo">@(tipo.Codigo == "AUTO" ? "Carro" : "Moto")</label>
+                }
+            </div>
+        </div>
+
+        <a class="btn btn-outline-secondary" asp-page="/Index">Limpiar filtros</a>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.TipoVehiculo))
+    {
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label asp-for="Filtro" class="form-label">Buscar</label>
+                <input asp-for="Filtro" class="form-control" placeholder="Ej: Toyota, scooter, SUV" />
+            </div>
+
+            <div class="col-md-2">
+                <label asp-for="MarcaId" class="form-label">Marca</label>
+                <select asp-for="MarcaId" class="form-select">
+                    <option value="">Todas</option>
+                    @foreach (var marca in Model.Marcas)
+                    {
+                        <option value="@marca.Id">@marca.Nombre</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label asp-for="CategoriaId" class="form-label">Categoría</label>
+                <select asp-for="CategoriaId" class="form-select">
+                    <option value="">Todas</option>
+                    @foreach (var categoria in Model.Categorias)
+                    {
+                        <option value="@categoria.Id">@categoria.Nombre</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label asp-for="CombustibleId" class="form-label">Combustible</label>
+                <select asp-for="CombustibleId" class="form-select">
+                    <option value="">Todos</option>
+                    @foreach (var combustible in Model.Combustibles)
+                    {
+                        <option value="@combustible.Id">@combustible.Nombre</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label asp-for="TransmisionId" class="form-label">Transmisión</label>
+                <select asp-for="TransmisionId" class="form-select">
+                    <option value="">Todas</option>
+                    @foreach (var transmision in Model.Transmisiones)
+                    {
+                        <option value="@transmision.Id">@transmision.Nombre</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12 d-flex justify-content-end">
+                <button class="btn btn-primary px-4" type="submit">Aplicar filtros</button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="filter-empty-state">
+            Selecciona automóvil o motocicleta para ver filtros específicos como marca, categoría, combustible y transmisión.
+        </div>
+    }
+</form>
+
+@if (!Model.Vehiculos.Any())
+{
+    <div class="alert alert-info">Todavía no hay vehículos publicados con ese filtro.</div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var vehiculo in Model.Vehiculos)
+        {
+            <div class="col-md-6 col-lg-4">
+                <article class="vehicle-card border rounded h-100">
+                    <a asp-page="/Vehiculos/Detalle" asp-route-placa="@vehiculo.Placa" class="text-decoration-none text-dark">
+                        @if (!string.IsNullOrWhiteSpace(vehiculo.FotoPrincipal))
+                        {
+                            <img src="@vehiculo.FotoPrincipal" alt="@vehiculo.Marca @vehiculo.Modelo" />
+                        }
+                        else
+                        {
+                            <div class="vehicle-card-placeholder">Sin foto</div>
+                        }
+                    </a>
+
+                    <div class="p-3">
+                        <div class="d-flex justify-content-between gap-2 mb-2">
+                            <h2 class="h5 mb-0">@vehiculo.Marca @vehiculo.Modelo</h2>
+                            <span class="badge text-bg-light">@vehiculo.Categoria</span>
+                        </div>
+
+                        <p class="text-muted mb-2">@vehiculo.TipoVehiculo</p>
+                        <p class="mb-0">
+                            Publicado por @vehiculo.TipoPublicador.ToLower()
+                            <a asp-page="/Perfil/Publico" asp-route-id="@vehiculo.PublicadorId">@vehiculo.PublicadorNombre</a>
+                        </p>
+                    </div>
+                </article>
+            </div>
+        }
+    </div>
+}

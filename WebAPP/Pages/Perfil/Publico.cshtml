@@ -1,0 +1,132 @@
+@page "{id:int}"
+@model WebAPP.Pages.Perfil.PublicoModel
+@{
+    ViewData["Title"] = "Perfil";
+}
+
+@if (Model.Perfil is null)
+{
+    <div class="alert alert-warning">No se encontro el perfil.</div>
+}
+else
+{
+    <section class="mb-4">
+        <div class="d-flex align-items-center gap-3">
+            @if (!string.IsNullOrWhiteSpace(Model.Perfil.FotoPerfilRuta))
+            {
+                <img src="@Model.Perfil.FotoPerfilRuta" alt="Foto de perfil" class="rounded-circle" style="width: 112px; height: 112px; object-fit: cover;" />
+            }
+            else
+            {
+                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 112px; height: 112px; font-size: 36px;">
+                    @Model.Perfil.Iniciales
+                </div>
+            }
+
+            <div>
+                <h1 class="h3 mb-1">@Model.Perfil.NombreCompleto</h1>
+                <p class="mb-1">@Model.Perfil.Pais</p>
+                @if (Model.Perfil.TipoCuenta == "Empresa")
+                {
+                    <p class="mb-1">
+                        <span class="badge text-bg-primary">Empresa de alquiler</span>
+                        @Model.Perfil.NombreEmpresa
+                        @if (Model.Perfil.Estado == "VERIFICADO")
+                        {
+                            <span class="badge text-bg-success">Verificada</span>
+                        }
+                    </p>
+                    <p class="text-muted mb-1">Perfil empresarial con documentos de verificacion registrados.</p>
+                }
+                else
+                {
+                    <p class="mb-1"><span class="badge text-bg-secondary">Persona</span></p>
+                }
+                <p class="mb-0">
+                    <strong>@Model.Perfil.CalificacionPromedio.ToString("0.0")</strong> / 5
+                    <span class="text-muted">(@Model.Perfil.TotalComentarios comentarios)</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="h4 mb-3">Vehiculos publicados</h2>
+
+        @if (!Model.Vehiculos.Any())
+        {
+            <p class="text-muted">Este usuario todavia no ha publicado vehiculos.</p>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var vehiculo in Model.Vehiculos)
+                {
+                    <div class="col-md-4 mb-3">
+                        <div class="border rounded p-3 h-100">
+                            <h3 class="h5">
+                                <a asp-page="/Vehiculos/Detalle" asp-route-placa="@vehiculo.Placa">@vehiculo.Marca @vehiculo.Modelo</a>
+                            </h3>
+                            <p class="mb-1">@vehiculo.TipoVehiculo</p>
+                            <p class="mb-1">Placa: @vehiculo.Placa</p>
+                            <span class="badge text-bg-secondary">@vehiculo.Estado</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+
+    <section>
+        <h2 class="h4 mb-3">Comentarios</h2>
+
+        @if (Model.UsuarioActualId is not null && Model.UsuarioActualId != Model.Perfil.Id)
+        {
+            <form method="post" class="border rounded p-3 mb-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="ComentarioInput.Calificacion" class="form-label"></label>
+                    <select asp-for="ComentarioInput.Calificacion" class="form-select">
+                        <option value="5">5 - Excelente</option>
+                        <option value="4">4 - Muy bueno</option>
+                        <option value="3">3 - Bueno</option>
+                        <option value="2">2 - Regular</option>
+                        <option value="1">1 - Malo</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ComentarioInput.Comentario" class="form-label"></label>
+                    <textarea asp-for="ComentarioInput.Comentario" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="ComentarioInput.Comentario" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Publicar comentario</button>
+            </form>
+        }
+
+        @if (!Model.Comentarios.Any())
+        {
+            <p class="text-muted">Este usuario todavia no tiene comentarios.</p>
+        }
+        else
+        {
+            @foreach (var comentario in Model.Comentarios)
+            {
+                <article class="border-bottom py-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>@comentario.AutorNombre</strong>
+                        <span>@comentario.Calificacion / 5</span>
+                    </div>
+                    <p class="mb-1">@comentario.Comentario</p>
+                    <small class="text-muted">@comentario.FechaCreacion.ToString("yyyy-MM-dd")</small>
+                </article>
+            }
+        }
+    </section>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

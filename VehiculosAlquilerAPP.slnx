@@ -1,6 +1,12 @@
 <Solution>
-  <Project Path="APPLICATION/VehiculosAlquilerApp.Application.csproj" />
-  <Project Path="Domain/VehiculosAlquilerApp.Domain.csproj" />
-  <Project Path="VehiculoAlquilerAPP.Infrastructure/VehiculoAlquilerAPP.Infrastructure.csproj" Id="0bbb9f44-b99a-4934-b57f-6c52876b2d39" />
-  <Project Path="VehiculosAlquilerAPP/VehiculosAlquilerAPP.csproj" />
+  <Folder Name="/Core/">
+    <Project Path="APPLICATION/VehiculosAlquilerApp.Application.csproj" />
+    <Project Path="Domain/VehiculosAlquilerApp.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Infrastucture/">
+    <Project Path="VehiculoAlquilerAPP.Infrastructure/VehiculoAlquilerAPP.Infrastructure.csproj" Id="0bbb9f44-b99a-4934-b57f-6c52876b2d39" />
+  </Folder>
+  <Folder Name="/Web/">
+    <Project Path="WebAPP/VehiculoAlquilerAPP.Web.csproj" Id="1da6f7b3-1215-4f77-b298-5a1ca4dfa51b" />
+  </Folder>
 </Solution>
